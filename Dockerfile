@@ -2,10 +2,10 @@
 FROM ubuntu:20.04
 
 # Add a label pointing to our repository
-LABEL org.opencontainers.image.source="https://github.com/glassboard-dev/gl-yocto-runner-image"
+LABEL org.opencontainers.image.source="https://github.com/akarnil/yocto-runner-image/"
 
 # set the github runner version
-ARG RUNNER_VERSION="2.285.1"
+ARG RUNNER_VERSION="2.310.2"
 
 # do a non interactive build
 ARG DEBIAN_FRONTEND=noninteractive
