@@ -2,8 +2,17 @@
 # Glasslabs Yocto Runner image recipe
 Docker Image recipe for generating a self-hosted Github organization runner capable of building a Yocto Linux rootfs
 
+```console
+
+# build this image
 sudo docker build -t akarnil/iotc-python:latest .
+
+# push to cloud
+
+docker login #first
 docker push akarnil/iotc-python:latest
+
+```
 
 
 ### Using this Docker image
@@ -16,7 +25,8 @@ The yocto-runner image utilizes a GitHub PAT to request a runner token from Gith
 
 Once you have your token, we can spool up our container using the newly retrieved docker image. You can set the ```name``` to whatever you'd like to call your container.
 ```console
-sudo docker run -d --env ACCESS_TOKEN=<YOUR-GITHUB-ACCESS-TOKEN> --name runner akarnil/iotc-python
+# creates a volume on the host called cache-yocto,
+sudo docker run -d --env ACCESS_TOKEN=$(cat ~/github-token) -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
 ```
 
 You can verify the status of the runner by executing the following.

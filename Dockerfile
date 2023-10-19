@@ -39,7 +39,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     cpio \
     file \
     xxd \
-    locales
+    locales \
+    nano
 
 # Update the locales to UTF-8
 RUN locale-gen en_US.UTF-8 && update-locale LC_ALL=en_US.UTF-8 \
@@ -61,9 +62,15 @@ COPY start.sh start.sh
 # make the script executable
 RUN chmod +x start.sh
 
+# Create mountpoint as root
+USER root
+RUN mkdir -p /mnt/resource \
+ && chown -R docker /mnt/resource
+
 # since the config and run script for actions are not allowed to be run by root,
 # set the user to "docker" so all subsequent commands are run as the docker user
 USER docker
+
 
 # set the entrypoint to the start.sh script
 ENTRYPOINT ["./start.sh"]
