@@ -2,19 +2,6 @@
 # Glasslabs Yocto Runner image recipe
 Docker Image recipe for generating a self-hosted Github organization runner capable of building a Yocto Linux rootfs
 
-```console
-
-# build this image
-sudo docker build -t akarnil/iotc-python:latest .
-
-# push to cloud
-
-docker login #first
-docker push akarnil/iotc-python:latest
-
-```
-
-
 ### Using this Docker image
 This image can be retrived from Docker hub and used to create a new container.
 ```console
@@ -27,7 +14,8 @@ Once you have your token, we can spool up our container using the newly retrieve
 ```console
 # creates a docker volume on the host called cache-yocto to store downloads and sstate
 # github-token is stored as a file here
-sudo docker run -d --env ACCESS_TOKEN=$(cat ~/github-token) -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
+
+sudo docker run -d --env ACCESS_TOKEN=$(cat ~/github-token) --env USER=<YOUR-GITHUB-USER> --env REPO=<YOUR-GITHUB-REPO> -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
 
 # if using org environment, note that the start.sh must be modified to use the correct REG_TOKEN and ./config lines
 sudo docker run -d --env ORGANIZATION=<YOUR-GITHUB-ORGANIZATION> --env ACCESS_TOKEN=<YOUR-GITHUB-ACCESS-TOKEN> -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
@@ -79,7 +67,15 @@ Enter name of work folder: [press Enter for _work]
 You are now ready to utilize your Yocto build runner in your own repositories/workflows. See [here](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow) for more information on how to use a self-hosted runner in your repository workflow files
 
 ### Building this image
-To begin building this image you will need to have Docker installed. You can find setup guides for various platforms [here](https://docs.docker.com/get-docker/). Once installed we can begin the build process. To build the docker image execute the following the command below - You can replace ```runner-image``` with whatever name you would like to call your image
+To begin building this image you will need to have Docker installed. You can find setup guides for various platforms [here](https://docs.docker.com/get-docker/). Once installed we can begin the build process. To build the docker image execute the following the command below
 ```console
-sudo docker build --tag runner-image .
+sudo docker build -t akarnil/iotc-python:latest .
+```
+
+
+### Pushing this image
+You will need your own docker hub account for this
+```console
+docker login #first
+docker push akarnil/iotc-python:latest
 ```
