@@ -25,8 +25,12 @@ The yocto-runner image utilizes a GitHub PAT to request a runner token from Gith
 
 Once you have your token, we can spool up our container using the newly retrieved docker image. You can set the ```name``` to whatever you'd like to call your container.
 ```console
-# creates a volume on the host called cache-yocto,
+# creates a docker volume on the host called cache-yocto to store downloads and sstate
+# github-token is stored as a file here
 sudo docker run -d --env ACCESS_TOKEN=$(cat ~/github-token) -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
+
+# if using org environment, note that the start.sh must be modified to use the correct REG_TOKEN and ./config lines
+sudo docker run -d --env ORGANIZATION=<YOUR-GITHUB-ORGANIZATION> --env ACCESS_TOKEN=<YOUR-GITHUB-ACCESS-TOKEN> -v cache-yocto:/mnt/resource:Z --name runner akarnil/iotc-python
 ```
 
 You can verify the status of the runner by executing the following.
